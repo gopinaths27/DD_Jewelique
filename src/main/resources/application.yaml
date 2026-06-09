@@ -1,7 +1,17 @@
 spring:
   application:
     name: backend
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: System.notifications.engine@gmail.com
+    password: bwddvehwqalbqfdi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     url: jdbc:mysql://localhost:3306/ddjewelique
     username: root
@@ -24,3 +34,5 @@ logging:
 
 jwt:
   secret: "thisIsASuperLongSecretKeyStringAtLeast64CharactersLong1234567890!@#$%^&*()"
+
+

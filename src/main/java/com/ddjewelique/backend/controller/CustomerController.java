@@ -1,5 +1,4 @@
 package com.ddjewelique.backend.controller;
-
 import com.ddjewelique.backend.dto.CustomerDTO;
 import com.ddjewelique.backend.dto.ResponseWrapper;
 import com.ddjewelique.backend.model.Customer;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
