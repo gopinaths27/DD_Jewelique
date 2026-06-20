@@ -21,7 +21,12 @@ public class Order {
 
     private LocalDateTime orderDate = LocalDateTime.now();
     private Double totalAmount = 0.0;
-    private String status = "PENDING";
+    private String status = "PLACED";
+    private String shippingAddress;
+    private String city;
+    private String pincode;
+    private String country;
+    private String phoneNumber;
 
     // --- Getters & Setters ---
     public Long getId() { return id; }
@@ -41,4 +46,40 @@ public class Order {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhoneNumber() { return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber;}
 }

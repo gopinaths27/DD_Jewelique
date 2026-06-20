@@ -49,6 +49,10 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<ResponseWrapper<CustomerDTO>> register(@RequestBody Customer customer) {
         try {
+            if (repo.findByEmail(customer.getEmail()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ResponseWrapper<>("M400", "Email already registered", null));
+            }
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             customer.setRole("ROLE_USER");
             Customer saved = repo.save(customer);
@@ -71,9 +75,12 @@ public class CustomerController {
     }
 
     @PostMapping("/register-admin")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResponseWrapper<CustomerDTO>> registerAdmin(@RequestBody Customer customer) {
         try {
+            if (repo.findByEmail(customer.getEmail()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ResponseWrapper<>("M400", "Email already registered", null));
+            }
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             customer.setRole("ROLE_ADMIN");
             Customer saved = repo.save(customer);

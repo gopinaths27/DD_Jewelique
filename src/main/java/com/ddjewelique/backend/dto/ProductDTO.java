@@ -3,6 +3,8 @@ package com.ddjewelique.backend.dto;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 public class ProductDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,8 +13,13 @@ public class ProductDTO {
     private String name;
     private double price;
     private String description;
-    private Integer stock;
     private String category;
+    private String material;
+    private Double weight;
+    private Integer stockQuantity;
+    private List<String> images;
+    private Boolean active;
+
     // getters and setters
 
     public Long getId() {
@@ -47,13 +54,6 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
 
     public String getCategory() {
         return category;
@@ -61,5 +61,44 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

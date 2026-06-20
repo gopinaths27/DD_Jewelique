@@ -7,6 +7,7 @@ public class CartItemResponse {
     private String productName;
     private int quantity;
     private BigDecimal price;
+    private Boolean active;
 
     public Long getProductId() {
         return productId;
@@ -34,6 +35,14 @@ public class CartItemResponse {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void setPrice(BigDecimal price) {

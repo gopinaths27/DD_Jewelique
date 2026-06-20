@@ -1,5 +1,9 @@
 package com.ddjewelique.backend.dto;
 
+import com.ddjewelique.backend.model.Payment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.OneToOne;
+
 import java.util.List;
 
 public class OrderDTO {
@@ -9,7 +13,15 @@ public class OrderDTO {
     private String customerName;
     private String customerEmail;
     private List<ProductDTO> products;
-
+    private String shippingAddress;
+    private String city;
+    private String pincode;
+    private String country;
+    private String phoneNumber;
+    private String paymentStatus;
+    @OneToOne(mappedBy = "order")
+    @JsonIgnore
+    private Payment payment;
     // getters and setters
 
     public Long getId() {
@@ -58,5 +70,55 @@ public class OrderDTO {
 
     public void setProducts(List<ProductDTO> products) {
         this.products = products;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public String getCountry() { return country;}
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }

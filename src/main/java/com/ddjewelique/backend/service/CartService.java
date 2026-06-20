@@ -81,4 +81,10 @@ public class CartService {
 
         return cartRepo.save(cart);
     }
+    public void clearCart(Customer customer) {
+        Cart cart = getCart(customer);
+        cart.getItems().clear();
+        cartRepo.save(cart);
     }
+
+}

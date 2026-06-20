@@ -29,6 +29,7 @@ public class CartMapper {
         dto.setProductName(item.getProduct().getName());
         dto.setQuantity(item.getQuantity());
         dto.setPrice(BigDecimal.valueOf(item.getProduct().getPrice())); // ✅ fixed
+        dto.setActive(item.getProduct().getActive());
         return dto;
     }
 }

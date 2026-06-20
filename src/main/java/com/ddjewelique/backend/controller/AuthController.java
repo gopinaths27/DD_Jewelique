@@ -31,10 +31,22 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    private final UserDetailsService userDetailsService;
 
     public AuthController(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -80,54 +92,57 @@ public class AuthController {
         }
     }
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseWrapper<String>> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            PasswordResetToken token = tokenRepository.findByOtp(request.getOtp())
+                    .orElseThrow(() -> new RuntimeException("Invalid OTP"));
 
-    @Autowired
-    private PasswordResetTokenRepository tokenRepository;
+            if (token.isExpired()) {
+                throw new RuntimeException("OTP expired");
+            }
 
-    @Autowired
-    private EmailService emailService;
+            Customer customer = token.getCustomer();
+            customer.setPassword(passwordEncoder.encode(request.getNewPassword()));
+            customerRepository.save(customer);
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+            tokenRepository.delete(token);
+
+            ResponseWrapper<String> response =
+                    new ResponseWrapper<>("M200", "Success", "Password updated successfully");
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            ResponseWrapper<String> response =
+                    new ResponseWrapper<>("M400", "Error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        Customer customer = customerRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<ResponseWrapper<String>> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        try {
+            Customer customer = customerRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ Delete old OTP if exists
-        tokenRepository.findByCustomer(customer).ifPresent(tokenRepository::delete);
+            tokenRepository.findByCustomer(customer).ifPresent(tokenRepository::delete);
 
-        // Generate new OTP
-        String otp = String.valueOf(new Random().nextInt(900000) + 100000);
-        PasswordResetToken resetToken = new PasswordResetToken(otp, customer);
-        tokenRepository.save(resetToken);
+            String otp = String.valueOf(new Random().nextInt(900000) + 100000);
+            PasswordResetToken resetToken = new PasswordResetToken(otp, customer);
+            tokenRepository.save(resetToken);
 
-        emailService.sendOtp(customer.getEmail(), otp);
+            emailService.sendOtp(customer.getEmail(), otp);
 
-        return ResponseEntity.ok(Map.of("message", "OTP sent to your email"));
-    }
+            ResponseWrapper<String> response =
+                    new ResponseWrapper<>("M200", "Success", "OTP sent to your email");
 
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
-        PasswordResetToken token = tokenRepository.findByOtp(request.getOtp())
-                .orElseThrow(() -> new RuntimeException("Invalid OTP"));
-
-        if (token.isExpired()) {
-            throw new RuntimeException("OTP expired");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            ResponseWrapper<String> response =
+                    new ResponseWrapper<>("M400", "Error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
-        Customer customer = token.getCustomer();
-        customer.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        customerRepository.save(customer);
-
-        tokenRepository.delete(token);
-
-        return ResponseEntity.ok(Map.of("message", "Password updated successfully"));
     }
-
 
 }

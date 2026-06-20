@@ -7,8 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "customer", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +41,7 @@ public class Customer implements UserDetails {
     private String password;
     @Column(nullable = false)
     private Boolean active = true;
+
     // --- Getters & Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -89,6 +95,7 @@ public class Customer implements UserDetails {
         return List.of(new SimpleGrantedAuthority(this.role));
     }
 
+
     @Override
     public String getUsername() { return this.email; }
 
@@ -105,5 +112,4 @@ public class Customer implements UserDetails {
     public boolean isEnabled() {
         return Boolean.TRUE.equals(this.active);
     }
-
 }

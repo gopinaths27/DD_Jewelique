@@ -8,6 +8,7 @@ public class CartResponse {
     private String customerEmail;   // or customerId
     private List<CartItemResponse> items;
     private BigDecimal totalAmount;
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -39,5 +40,13 @@ public class CartResponse {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

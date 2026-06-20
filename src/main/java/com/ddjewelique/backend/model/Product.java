@@ -21,6 +21,11 @@ public class Product {
     private Integer stockQuantity;   // available stock
     private String imageUrl;         // product photo link
 
+    @ElementCollection(fetch = FetchType.EAGER) // ✅ force load images
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url")
+    private List<String> images;
+
     // ✅ FIX: Use OrderItem instead of ManyToMany with Order
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @com.fasterxml.jackson.annotation.JsonIgnore
@@ -59,4 +64,20 @@ public class Product {
 
     public List<OrderItem> getOrderItems() { return orderItems; }
     public void setOrderItems(List<OrderItem> orderItems) { this.orderItems = orderItems; }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
 }
