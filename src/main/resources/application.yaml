@@ -1,6 +1,7 @@
 spring:
   application:
     name: backend
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -12,11 +13,13 @@ spring:
           auth: true
           starttls:
             enable: true
+
   datasource:
-        url: ${SPRING_DATASOURCE_URL}
-        username: ${SPRING_DATASOURCE_USERNAME}
-        password: ${SPRING_DATASOURCE_PASSWORD}
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
@@ -24,6 +27,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
 logging:
   level:
     org.springframework.security: DEBUG
@@ -31,6 +35,5 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
 
-    jwt:
-      secret: ${JWT_SECRET}
-
+jwt:
+  secret: ${JWT_SECRET}
