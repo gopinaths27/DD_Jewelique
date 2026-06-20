@@ -2,14 +2,13 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-# Copy everything
 COPY . .
 
-# Ensure mvnw has execute permission
 RUN chmod +x mvnw
 
-# Build the project
 RUN ./mvnw clean package -DskipTests
 
-# Run the jar
-CMD ["java", "-jar", "target/*.jar"]
+# Copy the built jar to /app/app.jar
+RUN cp target/*.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]
