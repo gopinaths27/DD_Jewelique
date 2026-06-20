@@ -13,14 +13,13 @@ spring:
           starttls:
             enable: true
   datasource:
-    url: jdbc:mysql://localhost:3306/ddjewelique
-    username: root
-    password: Developer@9841
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+        driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     show-sql: true
     properties:
       hibernate:
@@ -32,7 +31,6 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
 
-jwt:
-  secret: "thisIsASuperLongSecretKeyStringAtLeast64CharactersLong1234567890!@#$%^&*()"
-
+    jwt:
+      secret: ${JWT_SECRET}
 
